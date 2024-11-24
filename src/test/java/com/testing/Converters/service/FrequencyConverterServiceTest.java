@@ -1,8 +1,8 @@
 package com.testing.Converters.service;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -11,18 +11,13 @@ import java.math.RoundingMode;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FrequencyConverterServiceTest {
-    private FrequencyConverterService frequencyConverterService;
-
-    @BeforeEach
-    void setUp() {
-        frequencyConverterService = new FrequencyConverterService();
-    }
+public class FrequencyConverterServiceTest {
+    private final FrequencyConverterService frequencyConverterService = new FrequencyConverterService();
 
     // Test same unit conversions
     @Test
     @DisplayName("Test conversion within same unit should return same value")
-    void testSameUnitConversion() {
+    public void testSameUnitConversion() {
         BigDecimal input = BigDecimal.valueOf(100);
         BigDecimal result = frequencyConverterService.convertFrequency("hertz", "hertz", input);
         assertEquals(input, result, "Same unit conversion should return input value");
@@ -45,7 +40,7 @@ class FrequencyConverterServiceTest {
             "gigahertz,kilohertz,1,1000000",
             "gigahertz,megahertz,1,1000"
     })
-    void testValidConversions(String fromUnit, String toUnit, double input, double expected) {
+    public void testValidConversions(String fromUnit, String toUnit, double input, double expected) {
         BigDecimal result = frequencyConverterService.convertFrequency(
                 fromUnit,
                 toUnit,
@@ -61,7 +56,7 @@ class FrequencyConverterServiceTest {
     // Test invalid input unit
     @Test
     @DisplayName("Test invalid input unit should return zero")
-    void testInvalidInputUnit() {
+    public void testInvalidInputUnit() {
         BigDecimal result = frequencyConverterService.convertFrequency(
                 "invalidUnit",
                 "hertz",
@@ -73,7 +68,7 @@ class FrequencyConverterServiceTest {
     // Test invalid output unit
     @Test
     @DisplayName("Test invalid output unit should return zero")
-    void testInvalidOutputUnit() {
+    public void testInvalidOutputUnit() {
         BigDecimal result = frequencyConverterService.convertFrequency(
                 "hertz",
                 "invalidUnit",
@@ -85,7 +80,7 @@ class FrequencyConverterServiceTest {
     // Test zero value conversion
     @Test
     @DisplayName("Test zero value conversion")
-    void testZeroValueConversion() {
+    public void testZeroValueConversion() {
         BigDecimal result = frequencyConverterService.convertFrequency(
                 "hertz",
                 "kilohertz",
@@ -97,7 +92,7 @@ class FrequencyConverterServiceTest {
     // Test large number conversion
     @Test
     @DisplayName("Test large number conversion")
-    void testLargeNumberConversion() {
+    public void testLargeNumberConversion() {
         BigDecimal input = BigDecimal.valueOf(1e+20);
         BigDecimal result = frequencyConverterService.convertFrequency(
                 "hertz",
@@ -114,7 +109,7 @@ class FrequencyConverterServiceTest {
     // Test null handling
     @Test
     @DisplayName("Test null value handling")
-    void testNullValueHandling() {
+    public void testNullValueHandling() {
         assertThrows(NullPointerException.class, () -> {
             frequencyConverterService.convertFrequency("hertz", "kilohertz", null);
         }, "Should throw NullPointerException for null value");
@@ -123,7 +118,7 @@ class FrequencyConverterServiceTest {
     // Test precision
     @Test
     @DisplayName("Test conversion precision")
-    void testConversionPrecision() {
+    public void testConversionPrecision() {
         BigDecimal input = BigDecimal.valueOf(1.23456789);
         BigDecimal result = frequencyConverterService.convertFrequency(
                 "gigahertz",

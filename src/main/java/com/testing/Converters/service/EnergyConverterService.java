@@ -41,7 +41,7 @@ public class EnergyConverterService {
                 res = val.multiply(BigDecimal.valueOf(1.356));
                 break;
             default:
-                return BigDecimal.valueOf(-1);
+                return BigDecimal.valueOf(-1.0);
         }
         return switch (toUnit) {
             case "joule" -> res;
@@ -53,7 +53,7 @@ public class EnergyConverterService {
             case "electronvolt" -> res.multiply(BigDecimal.valueOf(6.242e+18));
             case "therm" -> res.divide(BigDecimal.valueOf(1.055e+8));
             case "foot pound" -> res.divide(BigDecimal.valueOf(1.356));
-            default -> BigDecimal.valueOf(-1);
+            default -> BigDecimal.valueOf(-1.0);
         };
     }
 }

@@ -11,11 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AreaConverter {
 
-    private final AreaConverterService areaConverterService;
-
-    public AreaConverter(AreaConverterService areaConverterService) {
-        this.areaConverterService = areaConverterService;
-    }
+    private final AreaConverterService areaConverterService = new AreaConverterService();
 
     @PostMapping("/areaConverter")
     public ResponseEntity<?> convertArea(@RequestBody Req req)
@@ -26,7 +22,7 @@ public class AreaConverter {
         double res = areaConverterService.convertArea(fromUnit, toUnit, val);
         if(res == -1)
         {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(-1.0,HttpStatus.BAD_REQUEST);
         }
         else
         {

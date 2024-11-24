@@ -1,7 +1,6 @@
 package com.testing.Converters.service;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -12,17 +11,12 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SpeedConverterServiceTest {
-    private SpeedConverterService speedConverterService;
-
-    @BeforeEach
-    void setUp() {
-        speedConverterService = new SpeedConverterService();
-    }
+public class SpeedConverterServiceTest {
+    private final SpeedConverterService speedConverterService = new SpeedConverterService();
 
     // Test each unit to meter per second (base unit) conversion
     @Test
-    void testConversionToBaseUnit() {
+    public void testConversionToBaseUnit() {
         assertEquals(new BigDecimal("0.447"),
                 speedConverterService.convertSpeed("mile per hour", "meter per second", BigDecimal.ONE));
 
@@ -38,7 +32,7 @@ class SpeedConverterServiceTest {
 
     // Test conversion from meter per second (base unit) to other units
     @Test
-    void testConversionFromBaseUnit() {
+    public void testConversionFromBaseUnit() {
         assertEquals(new BigDecimal("2.237"),
                 speedConverterService.convertSpeed("meter per second", "mile per hour", BigDecimal.ONE));
 
@@ -54,7 +48,7 @@ class SpeedConverterServiceTest {
 
     // Test same unit conversion
     @Test
-    void testSameUnitConversion() {
+    public void testSameUnitConversion() {
         BigDecimal testValue = new BigDecimal("100");
         assertEquals(testValue.setScale(3, RoundingMode.HALF_UP),
                 speedConverterService.convertSpeed("meter per second", "meter per second", testValue));
@@ -62,7 +56,7 @@ class SpeedConverterServiceTest {
 
     // Test invalid unit combinations
     @Test
-    void testInvalidUnits() {
+    public void testInvalidUnits() {
         assertEquals(0,
                 speedConverterService.convertSpeed("invalid unit", "meter per second", BigDecimal.ONE).compareTo(BigDecimal.valueOf(-1)));
         assertEquals(0,
@@ -71,14 +65,14 @@ class SpeedConverterServiceTest {
 
     // Test zero value conversion
     @Test
-    void testZeroConversion() {
+    public void testZeroConversion() {
         assertEquals(new BigDecimal("0.000"),
                 speedConverterService.convertSpeed("mile per hour", "kilometer per hour", BigDecimal.ZERO));
     }
 
     // Test large number conversion
     @Test
-    void testLargeNumberConversion() {
+    public void testLargeNumberConversion() {
         BigDecimal largeNumber = new BigDecimal("1000000");
         BigDecimal result = speedConverterService.convertSpeed("mile per hour", "kilometer per hour", largeNumber);
         // First verify it's a positive number

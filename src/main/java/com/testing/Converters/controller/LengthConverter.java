@@ -6,14 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 public class LengthConverter {
 
-    private final LengthConverterService lengthConverterService;
-
-    public LengthConverter(LengthConverterService lengthConverterService) {
-        this.lengthConverterService = lengthConverterService;
-    }
+    private final LengthConverterService lengthConverterService = new LengthConverterService();
 
     @PostMapping("/lengthConverter")
     public ResponseEntity<?> convertLength(@RequestBody Req req)
@@ -24,7 +23,7 @@ public class LengthConverter {
             double res = lengthConverterService.convertLength(fromUnit, toUnit, val);
             if(res == -1)
             {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(-1.0,HttpStatus.BAD_REQUEST);
             }
             else
             {

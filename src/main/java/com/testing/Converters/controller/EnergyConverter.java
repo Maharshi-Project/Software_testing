@@ -9,15 +9,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @RestController
 public class EnergyConverter {
 
-    private final EnergyConverterService energyConverterService;
-
-    public EnergyConverter(EnergyConverterService energyConverterService) {
-        this.energyConverterService = energyConverterService;
-    }
+    private EnergyConverterService energyConverterService = new EnergyConverterService();
 
     @PostMapping("/energyConverter")
     public ResponseEntity<?> convertEnergy(@RequestBody Req req)
@@ -26,13 +23,10 @@ public class EnergyConverter {
         String toUnit = req.getToUnit();
         double val = req.getValue();
         BigDecimal res = energyConverterService.convertEnergy(fromUnit, toUnit, BigDecimal.valueOf(val));
-        if(res.equals(-1))
-        {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        else
-        {
+        if (res.compareTo(BigDecimal.valueOf(-1.0)) != 0) {
             return new ResponseEntity<>(res, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(-1.0,HttpStatus.BAD_REQUEST);
         }
     }
 

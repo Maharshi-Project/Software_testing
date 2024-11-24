@@ -1,7 +1,6 @@
 package com.testing.Converters.service;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -12,18 +11,13 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TemperatureServiceTest {
-    private TemperatureService temperatureService;
+public class TemperatureServiceTest {
+    private TemperatureService temperatureService = new TemperatureService();
     private static final int SCALE = 2;
-
-    @BeforeEach
-    void setUp() {
-        temperatureService = new TemperatureService();
-    }
 
     // Celsius to Fahrenheit tests
     @Test
-    void testCelsiusToFahrenheit() {
+    public void testCelsiusToFahrenheit() {
         assertEquals(new BigDecimal("32.00"),
                 temperatureService.celsiusToFahrenheit(BigDecimal.ZERO).setScale(SCALE, RoundingMode.HALF_UP));
         assertEquals(new BigDecimal("212.00"),
@@ -34,7 +28,7 @@ class TemperatureServiceTest {
 
     // Celsius to Kelvin tests
     @Test
-    void testCelsiusToKelvin() {
+    public void testCelsiusToKelvin() {
         assertEquals(new BigDecimal("273.15"),
                 temperatureService.celsiusToKelvin(BigDecimal.ZERO));
         assertEquals(new BigDecimal("373.15"),
@@ -45,7 +39,7 @@ class TemperatureServiceTest {
 
     // Fahrenheit to Celsius tests
     @Test
-    void testFahrenheitToCelsius() {
+    public void testFahrenheitToCelsius() {
         assertEquals(new BigDecimal("0.00"),
                 temperatureService.fahrenheitToCelsius(new BigDecimal("32")).setScale(SCALE, RoundingMode.HALF_UP));
         assertEquals(0,
@@ -56,7 +50,7 @@ class TemperatureServiceTest {
 
     // Fahrenheit to Kelvin tests
     @Test
-    void testFahrenheitToKelvin() {
+    public void testFahrenheitToKelvin() {
         assertEquals(new BigDecimal("273.15"),
                 temperatureService.fahrenheitToKelvin(new BigDecimal("32")).setScale(SCALE, RoundingMode.HALF_UP));
         assertEquals(new BigDecimal("373.95"),
@@ -67,7 +61,7 @@ class TemperatureServiceTest {
 
     // Kelvin to Celsius tests
     @Test
-    void testKelvinToCelsius() {
+    public void testKelvinToCelsius() {
         assertEquals(new BigDecimal("0.00"),
                 temperatureService.kelvinToCelsius(new BigDecimal("273.15")).setScale(SCALE, RoundingMode.HALF_UP));
         assertEquals(new BigDecimal("100.00"),
@@ -78,7 +72,7 @@ class TemperatureServiceTest {
 
     // Kelvin to Fahrenheit tests
     @Test
-    void testKelvinToFahrenheit() {
+    public void testKelvinToFahrenheit() {
         assertEquals(new BigDecimal("32.00"),
                 temperatureService.kelvinToFahrenheit(new BigDecimal("273.15")).setScale(SCALE, RoundingMode.HALF_UP));
         assertEquals(new BigDecimal("212.00"),
@@ -89,7 +83,7 @@ class TemperatureServiceTest {
 
     // Test extreme temperatures
     @Test
-    void testExtremeTemperatures() {
+    public void testExtremeTemperatures() {
         // Absolute Zero in Kelvin (0K = -273.15°C = -459.67°F)
         BigDecimal absoluteZeroKelvin = BigDecimal.ZERO;
         BigDecimal absoluteZeroCelsius = new BigDecimal("-273.15");

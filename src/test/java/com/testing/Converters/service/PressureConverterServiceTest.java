@@ -1,19 +1,13 @@
 package com.testing.Converters.service;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PressureConverterServiceTest {
-    private PressureConverterService pressureConverterService;
-
-    @BeforeEach
-    void setUp() {
-        pressureConverterService = new PressureConverterService();
-    }
+public class PressureConverterServiceTest {
+    private PressureConverterService pressureConverterService = new PressureConverterService();;
 
     @Test
     public void testConvertPascalToBar() {
