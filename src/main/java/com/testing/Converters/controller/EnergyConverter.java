@@ -14,7 +14,7 @@ import java.util.Objects;
 @RestController
 public class EnergyConverter {
 
-    private EnergyConverterService energyConverterService = new EnergyConverterService();
+    private final EnergyConverterService energyConverterService = new EnergyConverterService();
 
     @PostMapping("/energyConverter")
     public ResponseEntity<?> convertEnergy(@RequestBody Req req)

@@ -1,7 +1,7 @@
 package com.testing.Converters.controller;
 
 import com.testing.Converters.DTO.Req;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -21,7 +21,7 @@ public class EnergyConverterTest {
         ResponseEntity<?> response = energyConverter.convertEnergy(req);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(expected_1, response.getBody());
+        assertEquals(0, expected_1.compareTo((BigDecimal) response.getBody()));
     }
 
     @Test

@@ -3,6 +3,7 @@ package com.testing.Converters.service;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Service
 public class EnergyConverterService {
@@ -32,7 +33,7 @@ public class EnergyConverterService {
                 res = val.multiply(BigDecimal.valueOf(3.6e+6));
                 break;
             case "electronvolt":
-                res = val.divide(BigDecimal.valueOf(6.242e+18));
+                res = val.divide(BigDecimal.valueOf(6.242e+18),3,RoundingMode.HALF_EVEN);
                 break;
             case "therm":
                 res = val.multiply(BigDecimal.valueOf(1.055e+8));
@@ -44,15 +45,15 @@ public class EnergyConverterService {
                 return BigDecimal.valueOf(-1.0);
         }
         return switch (toUnit) {
-            case "joule" -> res;
-            case "kilojoule" -> res.divide(BigDecimal.valueOf(1000));
-            case "gram calorie" -> res.divide(BigDecimal.valueOf(4.184));
-            case "kilocalorie" -> res.divide(BigDecimal.valueOf(4184));
-            case "watt hour" -> res.divide(BigDecimal.valueOf(3600));
-            case "kilowatt hour" -> res.divide(BigDecimal.valueOf(3.6e+6));
+            case "joule" -> res.setScale(3, RoundingMode.HALF_UP);
+            case "kilojoule" -> res.divide(BigDecimal.valueOf(1000),3, RoundingMode.HALF_UP);
+            case "gram calorie" -> res.divide(BigDecimal.valueOf(4.184),3, RoundingMode.HALF_UP);
+            case "kilocalorie" -> res.divide(BigDecimal.valueOf(4184), 3, RoundingMode.HALF_UP);
+            case "watt hour" -> res.divide(BigDecimal.valueOf(3600),3, RoundingMode.HALF_UP);
+            case "kilowatt hour" -> res.divide(BigDecimal.valueOf(3.6e+6),3, RoundingMode.HALF_UP);
             case "electronvolt" -> res.multiply(BigDecimal.valueOf(6.242e+18));
-            case "therm" -> res.divide(BigDecimal.valueOf(1.055e+8));
-            case "foot pound" -> res.divide(BigDecimal.valueOf(1.356));
+            case "therm" -> res.divide(BigDecimal.valueOf(1.055e+8),3, RoundingMode.HALF_UP);
+            case "foot pound" -> res.divide(BigDecimal.valueOf(1.356),3, RoundingMode.HALF_UP);
             default -> BigDecimal.valueOf(-1.0);
         };
     }

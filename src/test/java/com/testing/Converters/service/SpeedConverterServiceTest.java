@@ -1,6 +1,6 @@
 package com.testing.Converters.service;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -104,5 +104,67 @@ public class SpeedConverterServiceTest {
                 Arguments.of("knot", "mile per hour", new BigDecimal("50"),
                         new BigDecimal("57.536"))
         );
+    }
+
+    @Test
+    public void testAllFromUnitsToAllToUnits() {
+        BigDecimal[] values = {
+                BigDecimal.ONE,
+                BigDecimal.ZERO,
+                BigDecimal.valueOf(1000)
+        };
+        String[] fromUnits = {
+                "mile per hour", "foot per second", "meter per second",
+                "kilometer per hour", "knot"
+        };
+        String[] toUnits = {
+                "mile per hour", "foot per second", "meter per second",
+                "kilometer per hour", "knot"
+        };
+
+        for (BigDecimal value : values) {
+            for (String fromUnit : fromUnits) {
+                for (String toUnit : toUnits) {
+                    BigDecimal result = speedConverterService.convertSpeed(fromUnit, toUnit, value);
+                    assertNotEquals(BigDecimal.valueOf(-1), result);
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testInvalidFromUnit() {
+        BigDecimal result = speedConverterService.convertSpeed("invalid", "meter per second", BigDecimal.ONE);
+        assertEquals(BigDecimal.valueOf(-1), result);
+    }
+
+    @Test
+    public void testInvalidToUnit() {
+        BigDecimal result = speedConverterService.convertSpeed("meter per second", "invalid", BigDecimal.ONE);
+        assertEquals(0, result.compareTo(BigDecimal.valueOf(-1)));
+    }
+
+    @Test
+    public void testBothInvalidUnits() {
+        BigDecimal result = speedConverterService.convertSpeed("invalid", "invalid", BigDecimal.ONE);
+        assertEquals(BigDecimal.valueOf(-1), result);
+    }
+
+    @Test
+    public void testSpecificConversions() {
+        assertEquals(BigDecimal.valueOf(0.447).setScale(3, RoundingMode.HALF_UP),
+                speedConverterService.convertSpeed("mile per hour", "meter per second", BigDecimal.ONE));
+
+        assertEquals(BigDecimal.valueOf(3.281).setScale(3, RoundingMode.HALF_UP),
+                speedConverterService.convertSpeed("meter per second", "foot per second", BigDecimal.ONE));
+    }
+
+    @Test
+    public void testEdgeCases() {
+        BigDecimal zeroValue = BigDecimal.ZERO;
+        assertNotNull(speedConverterService.convertSpeed("meter per second", "mile per hour", zeroValue));
+
+        BigDecimal largeValue = BigDecimal.valueOf(1000000);
+        assertNotNull(speedConverterService.convertSpeed("kilometer per hour", "knot", largeValue));
     }
 }
