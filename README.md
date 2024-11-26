@@ -27,8 +27,12 @@ Key objectives:
 - Conversion services include:
   - Area
   - Energy
-  - Temperature
   - Frequency
+  - Length
+  - Mass
+  - Pressure
+  - Speed
+  - Temperature
 - Data flow graphs for DU-path testing.
 - Test case generation using JUnit.
 - Coverage analysis using JaCoCo.
