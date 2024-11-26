@@ -12,73 +12,75 @@ public class MassConverterServiceTest {
     private final MassConverterService massConverterService = new MassConverterService();
 
     @Test
-    public void testConvertTonneToKilogram() {
+    public void testConvertTonneToKilogram() throws Exception {
         BigDecimal result = massConverterService.convertMass("tonne", "kilogram", BigDecimal.valueOf(1));
         assertEquals(0, result.compareTo(BigDecimal.valueOf(1000)));
     }
 
     @Test
-    public void testConvertKilogramToGram() {
+    public void testConvertKilogramToGram() throws Exception {
         BigDecimal result = massConverterService.convertMass("kilogram", "gram", BigDecimal.valueOf(1));
         assertEquals(0, result.compareTo(BigDecimal.valueOf(1000)));
     }
 
     @Test
-    public void testConvertGramToMilligram() {
+    public void testConvertGramToMilligram() throws Exception {
         BigDecimal result = massConverterService.convertMass("gram", "milligram", BigDecimal.valueOf(1));
         assertEquals(0, result.compareTo(BigDecimal.valueOf(1000)));
     }
 
     @Test
-    public void testConvertMilligramToMicrogram() {
+    public void testConvertMilligramToMicrogram() throws Exception {
         BigDecimal result = massConverterService.convertMass("milligram", "microgram", BigDecimal.valueOf(1));
         assertEquals(0,result.compareTo(BigDecimal.valueOf(1000)));
     }
 
     @Test
-    public void testConvertImperialTonToUSTon() {
+    public void testConvertImperialTonToUSTon() throws Exception {
         BigDecimal result = massConverterService.convertMass("imperial ton", "US ton", BigDecimal.valueOf(1));
         assertEquals(0, result.compareTo(BigDecimal.valueOf(1.12)));
     }
 
     @Test
-    public void testConvertUSTonToStone() {
+    public void testConvertUSTonToStone() throws Exception {
         BigDecimal result = massConverterService.convertMass("US ton", "stone", BigDecimal.valueOf(1));
         assertEquals(BigDecimal.valueOf(142.857), result.setScale(3, RoundingMode.HALF_UP));  // Rounded to 2 decimals
     }
 
     @Test
-    public void testConvertPoundToOunce() {
+    public void testConvertPoundToOunce() throws Exception {
         BigDecimal result = massConverterService.convertMass("pound", "ounce", BigDecimal.valueOf(1));
         assertEquals(0, result.compareTo(BigDecimal.valueOf(16)));
     }
 
     @Test
     public void testConvertInvalidFromUnit() {
-        BigDecimal result = massConverterService.convertMass("invalidUnit", "gram", BigDecimal.valueOf(1));
-        assertEquals(BigDecimal.valueOf(-1), result);
+        assertThrows(Exception.class, () ->
+            massConverterService.convertMass("invalid", "gram", BigDecimal.valueOf(1))
+        );
     }
 
     @Test
     public void testConvertInvalidToUnit() {
-        BigDecimal result = massConverterService.convertMass("gram", "invalidUnit", BigDecimal.valueOf(1));
-        assertEquals(0, result.compareTo(BigDecimal.valueOf(-1)));
+        assertThrows(Exception.class, () ->
+                massConverterService.convertMass("gram", "invalid", BigDecimal.valueOf(1))
+                );
     }
 
     @Test
-    public void testBoundaryCaseZeroValue() {
+    public void testBoundaryCaseZeroValue() throws Exception {
         BigDecimal result = massConverterService.convertMass("kilogram", "gram", BigDecimal.valueOf(0));
         assertEquals(0, result.compareTo(BigDecimal.valueOf(0)));
     }
 
     @Test
-    public void testNegativeValueConversion() {
+    public void testNegativeValueConversion() throws Exception {
         BigDecimal result = massConverterService.convertMass("kilogram", "pound", BigDecimal.valueOf(-1));
         assertEquals(BigDecimal.valueOf(-2.205), result.setScale(3, RoundingMode.HALF_UP));  // Rounded to 5 decimals
     }
 
     @Test
-    public void testAllFromUnitsToAllToUnits() {
+    public void testAllFromUnitsToAllToUnits() throws Exception {
         BigDecimal[] values = {
                 BigDecimal.valueOf(1),
                 BigDecimal.valueOf(0),
@@ -107,24 +109,27 @@ public class MassConverterServiceTest {
 
     @Test
     public void testInvalidFromUnit() {
-        BigDecimal result = massConverterService.convertMass("invalid", "gram", BigDecimal.ONE);
-        assertEquals(BigDecimal.valueOf(-1), result);
+        assertThrows(Exception.class, () ->
+                massConverterService.convertMass("invalid", "gram", BigDecimal.valueOf(1))
+        );
     }
 
     @Test
     public void testInvalidToUnit() {
-        BigDecimal result = massConverterService.convertMass("gram", "invalid", BigDecimal.ONE);
-        assertEquals(0, result.compareTo(BigDecimal.valueOf(-1)));
+        assertThrows(Exception.class, () ->
+                massConverterService.convertMass("kilogram", "invalid", BigDecimal.valueOf(1))
+        );
     }
 
     @Test
     public void testBothInvalidUnits() {
-        BigDecimal result = massConverterService.convertMass("invalid", "invalid", BigDecimal.ONE);
-        assertEquals(BigDecimal.valueOf(-1), result);
+        assertThrows(Exception.class, () ->
+                massConverterService.convertMass("invalid", "invalid", BigDecimal.valueOf(1))
+        );
     }
 
     @Test
-    public void testSpecificConversions() {
+    public void testSpecificConversions() throws Exception {
         // Test specific conversions with known expected results
         assertEquals(BigDecimal.valueOf(1000).setScale(3, RoundingMode.HALF_UP),
                 massConverterService.convertMass("kilogram", "gram", BigDecimal.ONE));
@@ -134,7 +139,7 @@ public class MassConverterServiceTest {
     }
 
     @Test
-    public void testEdgeCases() {
+    public void testEdgeCases() throws Exception {
         // Zero value
         BigDecimal zeroValue = BigDecimal.ZERO;
         assertNotNull(massConverterService.convertMass("gram", "kilogram", zeroValue));

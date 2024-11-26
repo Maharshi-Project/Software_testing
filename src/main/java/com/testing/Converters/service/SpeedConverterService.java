@@ -7,7 +7,7 @@ import java.math.RoundingMode;
 
 @Service
 public class SpeedConverterService {
-    public BigDecimal convertSpeed(String fromUnit, String toUnit, BigDecimal val) {
+    public BigDecimal convertSpeed(String fromUnit, String toUnit, BigDecimal val) throws Exception {
         System.out.println("Speed Convert Request " + " From: " + fromUnit + " To: " + toUnit + " Value: " + val+"\n");
         BigDecimal res;
         // Default : Meter per second
@@ -29,7 +29,7 @@ public class SpeedConverterService {
                 res = val.divide(BigDecimal.valueOf(1.944), 10, RoundingMode.HALF_UP);
                 break;
             default:
-                return BigDecimal.valueOf(-1);
+                throw new Exception("Invalid fromUnit: " + fromUnit);
         }
         BigDecimal result = switch (toUnit) {
             case "mile per hour" -> res.multiply(BigDecimal.valueOf(2.237));
@@ -37,7 +37,7 @@ public class SpeedConverterService {
             case "meter per second" -> res;
             case "kilometer per hour" -> res.multiply(BigDecimal.valueOf(3.6));
             case "knot" -> res.multiply(BigDecimal.valueOf(1.944));
-            default -> BigDecimal.valueOf(-1);
+            default -> throw new Exception("Invalid toUnit: " + toUnit);
         };
         return result.setScale(3, RoundingMode.HALF_UP);
     }

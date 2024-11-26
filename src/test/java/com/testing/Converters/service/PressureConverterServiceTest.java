@@ -7,64 +7,65 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PressureConverterServiceTest {
-    private PressureConverterService pressureConverterService = new PressureConverterService();;
+    private final PressureConverterService pressureConverterService = new PressureConverterService();
 
     @Test
-    public void testConvertPascalToBar() {
+    public void testConvertPascalToBar() throws Exception {
         BigDecimal result = pressureConverterService.convertPressure("pascal", "bar", BigDecimal.valueOf(100000));
         assertEquals(0, result.compareTo(BigDecimal.valueOf(1.000)));
     }
 
     @Test
-    public void testConvertPascalToPoundPerSquareInch() {
+    public void testConvertPascalToPoundPerSquareInch() throws Exception {
         BigDecimal result = pressureConverterService.convertPressure("pascal", "pound per sq inch", BigDecimal.valueOf(101325));
         assertEquals(BigDecimal.valueOf(14.695), result);
     }
 
     @Test
-    public void testConvertPascalToTorr() {
+    public void testConvertPascalToTorr() throws Exception {
         BigDecimal result = pressureConverterService.convertPressure("pascal", "torr", BigDecimal.valueOf(101325));
         assertEquals(0, result.compareTo(BigDecimal.valueOf(760.128)));
     }
 
     @Test
-    public void testConvertBarToPascal() {
+    public void testConvertBarToPascal() throws Exception {
         BigDecimal result = pressureConverterService.convertPressure("bar", "pascal", BigDecimal.valueOf(1));
         assertEquals(BigDecimal.valueOf(100000), result);
     }
 
     @Test
-    public void testConvertPoundPerSquareInchToPascal() {
+    public void testConvertPoundPerSquareInchToPascal() throws Exception {
         BigDecimal result = pressureConverterService.convertPressure("pound per sq inch", "pascal", BigDecimal.valueOf(14.696));
         assertEquals(0, result.compareTo(BigDecimal.valueOf(101328.920)));
     }
 
     @Test
-    public void testConvertStandardAtmosphereToTorr() {
+    public void testConvertStandardAtmosphereToTorr() throws Exception {
         BigDecimal result = pressureConverterService.convertPressure("standard atmosphere", "torr", BigDecimal.valueOf(1));
         assertEquals(0, result.compareTo(BigDecimal.valueOf(759.940)));
     }
 
     @Test
-    public void testConvertTorrToStandardAtmosphere() {
+    public void testConvertTorrToStandardAtmosphere() throws Exception {
         BigDecimal result = pressureConverterService.convertPressure("torr", "standard atmosphere", BigDecimal.valueOf(760));
         assertEquals(0, result.compareTo(BigDecimal.valueOf(1.000)));
     }
 
     @Test
-    public void testConvertTorrToPoundPerSquareInch() {
+    public void testConvertTorrToPoundPerSquareInch() throws Exception {
         BigDecimal result = pressureConverterService.convertPressure("torr", "pound per sq inch", BigDecimal.valueOf(760));
         assertEquals(BigDecimal.valueOf(14.693), result);
     }
 
     @Test
     public void testInvalidUnitConversion() {
-        BigDecimal result = pressureConverterService.convertPressure("unknown", "pascal", BigDecimal.valueOf(100000));
-        assertEquals(BigDecimal.valueOf(0), result);
+        assertThrows(Exception.class, () ->
+            pressureConverterService.convertPressure("invalid","torr", BigDecimal.valueOf(1))
+        );
     }
 
     @Test
-    public void testAllFromUnitsToAllToUnits() {
+    public void testAllFromUnitsToAllToUnits() throws Exception {
         BigDecimal[] values = {
                 BigDecimal.ONE,
                 BigDecimal.ZERO,
@@ -89,24 +90,24 @@ public class PressureConverterServiceTest {
 
     @Test
     public void testInvalidFromUnit() {
-        BigDecimal result = pressureConverterService.convertPressure("invalid", "pascal", BigDecimal.ONE);
-        assertEquals(BigDecimal.ZERO, result);
+        assertThrows(Exception.class, () ->
+                pressureConverterService.convertPressure("invalid", "pascal", BigDecimal.ONE));
     }
 
     @Test
     public void testInvalidToUnit() {
-        BigDecimal result = pressureConverterService.convertPressure("pascal", "invalid", BigDecimal.ONE);
-        assertEquals(BigDecimal.ZERO, result);
+        assertThrows(Exception.class, () ->
+                pressureConverterService.convertPressure("pascal", "invalid", BigDecimal.ONE));
     }
 
     @Test
     public void testBothInvalidUnits() {
-        BigDecimal result = pressureConverterService.convertPressure("invalid", "invalid", BigDecimal.ONE);
-        assertEquals(BigDecimal.ZERO, result);
+        assertThrows(Exception.class, () ->
+                pressureConverterService.convertPressure("invalid", "invalid", BigDecimal.ONE));
     }
 
     @Test
-    public void testSpecificConversions() {
+    public void testSpecificConversions() throws Exception {
         assertEquals(0,
                 pressureConverterService.convertPressure("bar", "pascal", BigDecimal.ONE).compareTo(BigDecimal.valueOf(100000)));
 
@@ -115,7 +116,7 @@ public class PressureConverterServiceTest {
     }
 
     @Test
-    public void testEdgeCases() {
+    public void testEdgeCases() throws Exception {
         // Zero value
         BigDecimal zeroValue = BigDecimal.ZERO;
         assertNotNull(pressureConverterService.convertPressure("pascal", "bar", zeroValue));

@@ -4,11 +4,12 @@ import com.fasterxml.jackson.databind.BeanProperty;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Service
 public class MassConverterService {
 
-    public BigDecimal convertMass(String fromUnit, String toUnit, BigDecimal val) {
+    public BigDecimal convertMass(String fromUnit, String toUnit, BigDecimal val) throws Exception{
         System.out.println("Mass Convert Request " + " From: " + fromUnit + " To: " + toUnit + " Value: " + val + "\n");
         BigDecimal res;
         // base unit : gram
@@ -44,7 +45,7 @@ public class MassConverterService {
                 res = val.multiply(BigDecimal.valueOf(28.3495));
                 break;
             default:
-                return BigDecimal.valueOf(-1);
+                throw new Exception("Invalid fromUnit: " + fromUnit);
         }
         BigDecimal result =  switch (toUnit) {
             case "tonne" -> res.multiply(BigDecimal.valueOf(1e-6));
@@ -57,8 +58,8 @@ public class MassConverterService {
             case "stone" -> res.multiply(BigDecimal.valueOf(0.000157473));
             case "pound" -> res.multiply(BigDecimal.valueOf(0.00220462));
             case "ounce" -> res.multiply(BigDecimal.valueOf(0.035274));
-            default -> BigDecimal.valueOf(-1);
+            default -> throw new Exception("Invalid toUnit: " + toUnit);
         };
-        return result.setScale(3,BigDecimal.ROUND_HALF_UP);
+        return result.setScale(3, RoundingMode.HALF_UP);
     }
 }

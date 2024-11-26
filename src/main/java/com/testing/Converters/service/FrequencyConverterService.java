@@ -3,11 +3,12 @@ package com.testing.Converters.service;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Service
 public class FrequencyConverterService {
 
-    public BigDecimal convertFrequency(String fromUnit, String toUnit, BigDecimal val) {
+    public BigDecimal convertFrequency(String fromUnit, String toUnit, BigDecimal val) throws Exception {
         System.out.println("Frequency Convert Request " + " From: " + fromUnit + " To: " + toUnit + " Value: " + val+"\n");
         BigDecimal res;
         // Default : hertz
@@ -26,14 +27,14 @@ public class FrequencyConverterService {
                 res = val.multiply(BigDecimal.valueOf(1e+9));
                 break;
             default:
-                return BigDecimal.ZERO;
+                throw new Exception("Invalid fromUnit " + fromUnit);
         }
         return switch (toUnit) {
             case "hertz" -> res;
-            case "kilohertz" -> res.divide(BigDecimal.valueOf(1000));
-            case "megahertz" -> res.divide(BigDecimal.valueOf(1e+6));
-            case "gigahertz" -> res.divide(BigDecimal.valueOf(1e+9));
-            default -> BigDecimal.ZERO;
+            case "kilohertz" -> res.divide(BigDecimal.valueOf(1000), 2, RoundingMode.HALF_UP);
+            case "megahertz" -> res.divide(BigDecimal.valueOf(1e+6),2, RoundingMode.HALF_UP);
+            case "gigahertz" -> res.divide(BigDecimal.valueOf(1e+9),2, RoundingMode.HALF_UP);
+            default -> throw new Exception("Invalid fromUnit " + fromUnit);
         };
     }
 }

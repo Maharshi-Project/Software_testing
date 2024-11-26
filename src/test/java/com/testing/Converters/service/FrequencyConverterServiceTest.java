@@ -16,7 +16,7 @@ public class FrequencyConverterServiceTest {
     // Test same unit conversions
     @Test
     @DisplayName("Test conversion within same unit should return same value")
-    public void testSameUnitConversion() {
+    public void testSameUnitConversion() throws Exception {
         BigDecimal input = BigDecimal.valueOf(100);
         BigDecimal result = frequencyConverterService.convertFrequency("hertz", "hertz", input);
         assertEquals(input, result, "Same unit conversion should return input value");
@@ -39,7 +39,7 @@ public class FrequencyConverterServiceTest {
             "gigahertz,kilohertz,1,1000000",
             "gigahertz,megahertz,1,1000"
     })
-    public void testValidConversions(String fromUnit, String toUnit, double input, double expected) {
+    public void testValidConversions(String fromUnit, String toUnit, double input, double expected) throws Exception {
         BigDecimal result = frequencyConverterService.convertFrequency(
                 fromUnit,
                 toUnit,
@@ -56,42 +56,40 @@ public class FrequencyConverterServiceTest {
     @Test
     @DisplayName("Test invalid input unit should return zero")
     public void testInvalidInputUnit() {
-        BigDecimal result = frequencyConverterService.convertFrequency(
-                "invalidUnit",
+        Exception exception = assertThrows(Exception.class, () -> frequencyConverterService.convertFrequency(
+                "invalid",
                 "hertz",
                 BigDecimal.ONE
-        );
-        assertEquals(BigDecimal.ZERO, result, "Invalid input unit should return zero");
+        ));
     }
 
     // Test invalid output unit
     @Test
     @DisplayName("Test invalid output unit should return zero")
     public void testInvalidOutputUnit() {
-        BigDecimal result = frequencyConverterService.convertFrequency(
+        Exception exception = assertThrows(Exception.class, () -> frequencyConverterService.convertFrequency(
                 "hertz",
-                "invalidUnit",
+                "invalid",
                 BigDecimal.ONE
-        );
-        assertEquals(BigDecimal.ZERO, result, "Invalid output unit should return zero");
+        ));
     }
 
     // Test zero value conversion
     @Test
     @DisplayName("Test zero value conversion")
-    public void testZeroValueConversion() {
+    public void testZeroValueConversion() throws Exception {
         BigDecimal result = frequencyConverterService.convertFrequency(
                 "hertz",
                 "kilohertz",
                 BigDecimal.ZERO
         );
-        assertEquals(BigDecimal.ZERO, result, "Zero value conversion failed");
+        assertEquals(0, result.compareTo(BigDecimal.ZERO));
     }
 
     // Test large number conversion
     @Test
     @DisplayName("Test large number conversion")
-    public void testLargeNumberConversion() {
+    public void testLargeNumberConversion() throws Exception {
         BigDecimal input = BigDecimal.valueOf(1e+20);
         BigDecimal result = frequencyConverterService.convertFrequency(
                 "hertz",
@@ -117,7 +115,7 @@ public class FrequencyConverterServiceTest {
     // Test precision
     @Test
     @DisplayName("Test conversion precision")
-    public void testConversionPrecision() {
+    public void testConversionPrecision() throws Exception {
         BigDecimal input = BigDecimal.valueOf(1.23456789);
         BigDecimal result = frequencyConverterService.convertFrequency(
                 "gigahertz",
