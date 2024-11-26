@@ -42,3 +42,21 @@ Key objectives:
 - **Maven** for build automation
 
 ---
+
+## **JaCoCo Results**
+
+**Dashboard**
+
+<img src="JaCoCo Dashboard.png" alt="Dashboard" width="950" height="auto">
+
+**Controller**
+
+<img src="JaCoCo Controller.png" alt="Controller" width="950" height="auto">
+
+**Services**
+
+<img src="JaCoCo Services.png" alt="Services" width="950" height="auto">
+
+**DTO**
+
+<img src="JaCoCo DTO.png" alt="DTO" width="950" height="auto">
